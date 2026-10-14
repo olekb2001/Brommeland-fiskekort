@@ -70,12 +70,12 @@ export function Booking({ cancelled = false }: { cancelled?: boolean }) {
   const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
   const total = orderTotal(Object.values(cart).map((qty) => ({ qty })));
 
-  const nowYm = (() => {
-    const t = todayOslo();
-    return { y: Number(t.slice(0, 4)), m: Number(t.slice(5, 7)) };
-  })();
-  const canPrev = ym.year * 12 + ym.month > nowYm.y * 12 + nowYm.m;
-  const canNext = ym.year * 12 + ym.month < nowYm.y * 12 + nowYm.m + 18;
+  // Kalenderen viser bare sesongen som er aktuell nå (pågående, eller neste når sesongen er over).
+  const first = defaultMonth();
+  const lastMonth = Number(site.season.end.slice(0, 2));
+  const cur = ym.year * 12 + ym.month;
+  const canPrev = cur > first.year * 12 + first.month;
+  const canNext = cur < first.year * 12 + lastMonth;
 
   const go = (delta: number) => {
     const idx = ym.year * 12 + (ym.month - 1) + delta;
