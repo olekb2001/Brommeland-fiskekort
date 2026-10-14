@@ -52,7 +52,8 @@ export const metadata: Metadata = {
     description: site.description,
     images: ["/images/og.jpg"],
   },
-  robots: { index: true, follow: true },
+  // Sett NEXT_PUBLIC_NOINDEX=1 i Vercel mens siden er under utvikling. Fjern den ved lansering.
+  robots: process.env.NEXT_PUBLIC_NOINDEX === "1" ? { index: false, follow: false } : { index: true, follow: true },
 };
 
 const orgJsonLd = {
